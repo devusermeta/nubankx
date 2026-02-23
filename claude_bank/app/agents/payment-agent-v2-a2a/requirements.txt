@@ -1,0 +1,22 @@
+# FastAPI and ASGI server
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# Azure AI Foundry
+azure-ai-projects>=1.0.0
+azure-identity>=1.15.0
+
+# Agent Framework (for MCPStreamableHTTPTool)
+agent-framework>=0.1.0
+
+# Pydantic for data validation
+pydantic>=2.5.0
+
+# Utilities
+python-dotenv>=1.0.0
+
+# Observability
+azure-monitor-opentelemetry>=1.8.0
+
+# Pin to version that has opentelemetry.semconv_ai module AND SpanAttributes.LLM_SYSTEM (removed in 0.4.2+)
+opentelemetry-semantic-conventions-ai==0.4.1

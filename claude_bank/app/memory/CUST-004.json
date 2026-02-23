@@ -1,0 +1,195 @@
+{
+  "customer_id": "CUST-004",
+  "cached_at": "2026-02-24T02:41:35.015860",
+  "ttl_seconds": 300,
+  "data": {
+    "accounts": [
+      {
+        "id": "CHK-004",
+        "userName": "anan.chaiyaporn@example.com",
+        "accountHolderFullName": "Anan Chaiyaporn",
+        "currency": "THB",
+        "activationDate": "2025-09-01",
+        "balance": "113400.0",
+        "paymentMethods": null
+      }
+    ],
+    "balance": 113400.0,
+    "account_details": {
+      "id": "CHK-004",
+      "userName": "anan.chaiyaporn@example.com",
+      "accountHolderFullName": "Anan Chaiyaporn",
+      "currency": "THB",
+      "activationDate": "2025-09-01",
+      "balance": "113400.0",
+      "paymentMethods": [
+        {
+          "id": "PM-CHK-004",
+          "type": "BankTransfer",
+          "activationDate": "2025-09-01",
+          "expirationDate": "9999-12-31"
+        }
+      ]
+    },
+    "customer_name": "Anan Chaiyaporn",
+    "last_5_transactions": [
+      {
+        "id": "T000084",
+        "description": "Transfer from Somchai Rattanakorn",
+        "type": "income",
+        "recipientName": "Somchai Rattanakorn",
+        "recipientBankReference": "123-456-001",
+        "accountId": "CHK-004",
+        "paymentType": "transfer",
+        "amount": 10000.0,
+        "timestamp": "2025-11-08T10:28:49"
+      },
+      {
+        "id": "T000078",
+        "description": "Transfer from Somchai Rattanakorn",
+        "type": "income",
+        "recipientName": "Somchai Rattanakorn",
+        "recipientBankReference": "123-456-001",
+        "accountId": "CHK-004",
+        "paymentType": "transfer",
+        "amount": 5000.0,
+        "timestamp": "2025-11-07T21:35:53"
+      },
+      {
+        "id": "T000063",
+        "description": "Transfer to Pimchanok Thongchai",
+        "type": "outcome",
+        "recipientName": "Pimchanok Thongchai",
+        "recipientBankReference": "123-456-003",
+        "accountId": "CHK-004",
+        "paymentType": "Transfer",
+        "amount": 600.0,
+        "timestamp": "2025-10-26T10:00:00+07:00"
+      },
+      {
+        "id": "T000060",
+        "description": "Transfer from Thanakorn Vichai",
+        "type": "income",
+        "recipientName": "Thanakorn Vichai",
+        "recipientBankReference": "123-456-008",
+        "accountId": "CHK-004",
+        "paymentType": "Transfer",
+        "amount": 400.0,
+        "timestamp": "2025-10-25T13:00:00+07:00"
+      },
+      {
+        "id": "T000049",
+        "description": "Transfer to Thanakorn Vichai",
+        "type": "outcome",
+        "recipientName": "Thanakorn Vichai",
+        "recipientBankReference": "123-456-008",
+        "accountId": "CHK-004",
+        "paymentType": "Transfer",
+        "amount": 900.0,
+        "timestamp": "2025-10-24T13:00:00+07:00"
+      }
+    ],
+    "last_transaction": {
+      "id": "T000084",
+      "description": "Transfer from Somchai Rattanakorn",
+      "type": "income",
+      "recipientName": "Somchai Rattanakorn",
+      "recipientBankReference": "123-456-001",
+      "accountId": "CHK-004",
+      "paymentType": "transfer",
+      "amount": 10000.0,
+      "timestamp": "2025-11-08T10:28:49"
+    },
+    "beneficiaries": [
+      {
+        "id": "1",
+        "account_number": "123-456-001",
+        "name": "Somchai Rattanakorn",
+        "alias": "Somchai",
+        "customer_id": null,
+        "source": "csv",
+        "added_date": "2025-10-27"
+      },
+      {
+        "id": "2",
+        "account_number": "123-456-002",
+        "name": "Nattaporn Suksawat",
+        "alias": "Nattaporn",
+        "customer_id": null,
+        "source": "csv",
+        "added_date": "2025-10-27"
+      },
+      {
+        "id": "3",
+        "account_number": "123-456-003",
+        "name": "Pimchanok Thongchai",
+        "alias": "Pimchanok",
+        "customer_id": null,
+        "source": "csv",
+        "added_date": "2025-10-27"
+      },
+      {
+        "id": "4",
+        "account_number": "123-456-005",
+        "name": "Suda Kittikorn",
+        "alias": "Suda",
+        "customer_id": null,
+        "source": "csv",
+        "added_date": "2025-10-27"
+      },
+      {
+        "id": "5",
+        "account_number": "123-456-006",
+        "name": "Krit Boonyarat",
+        "alias": "Krit",
+        "customer_id": null,
+        "source": "csv",
+        "added_date": "2025-10-27"
+      },
+      {
+        "id": "6",
+        "account_number": "123-456-007",
+        "name": "Warunee Jirapat",
+        "alias": "Warunee",
+        "customer_id": null,
+        "source": "csv",
+        "added_date": "2025-10-27"
+      },
+      {
+        "id": "7",
+        "account_number": "123-456-008",
+        "name": "Thanakorn Vichai",
+        "alias": "Thanakorn",
+        "customer_id": null,
+        "source": "csv",
+        "added_date": "2025-10-27"
+      },
+      {
+        "id": "8",
+        "account_number": "123-456-009",
+        "name": "Siriporn Kanjana",
+        "alias": "Siriporn",
+        "customer_id": null,
+        "source": "csv",
+        "added_date": "2025-10-27"
+      },
+      {
+        "id": "9",
+        "account_number": "123-456-010",
+        "name": "Apichat Wattanakul",
+        "alias": "Apichat",
+        "customer_id": null,
+        "source": "csv",
+        "added_date": "2025-10-27"
+      }
+    ],
+    "limits": {
+      "per_transaction_limit": 50000.0,
+      "daily_limit": 200000.0,
+      "remaining_today": 200000.0,
+      "daily_used": 0.0,
+      "utilization_percent": 0.0,
+      "currency": "THB"
+    }
+  }
+}

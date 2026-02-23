@@ -1,0 +1,23 @@
+{
+  "session_id": "thread_CUST-004",
+  "customer_id": "CUST-004",
+  "user_email": "anan@bankxthb.onmicrosoft.com",
+  "started_at": "2026-02-24T04:03:09.255071",
+  "last_updated": "2026-02-24T04:23:29.162801",
+  "conversation": [
+    {
+      "question": "what are the latest product information for the application of credit cards",
+      "answer": "I don't have information about credit card applications in my current knowledge base. Would you like me to create a support ticket so a product specialist can help you with this?\n\n🚨 TICKET CREATION CONFIRMATION REQUIRED 🚨\nPlease confirm to proceed with this ticket creation:\n• Issue: Latest product information for credit card application\n• Type: Product Information\n• Priority: medium\n\nReply 'Yes' or 'Confirm' to proceed with the ticket creation.",
+      "timestamp": "2026-02-24T04:03:09.255103",
+      "agent_used": "Product Info Agent",
+      "duration_seconds": 22.691680431365967
+    },
+    {
+      "question": "transfer 300thb to Somchai Rattanakorn",
+      "answer": "The paymentagent service is taking too long to respond. Please try again.",
+      "timestamp": "2026-02-24T04:23:29.162769",
+      "agent_used": "Payment Agent",
+      "duration_seconds": 91.36198568344116
+    }
+  ]
+}
