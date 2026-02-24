@@ -124,3 +124,185 @@ flowchart LR
 - `BATCH_02_AGENTS.md` — file-by-file summary for standalone agents domain.
 - `BATCH_03_PLATFORM.md` — file-by-file summary for registry, sdk, frontend, and infra.
 - `BATCH_05_RISK_BUG_HOTSPOTS.md` — high-risk findings with exact references.
+
+---
+
+## D) Detailed sequence: UC2 Product Info not found → confirmation → A2A escalation bridge → Power Automate
+
+### Sequence diagram with concrete payloads
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant UI as Frontend Chat UI
+    participant Copilot as Copilot API (/api/chat)
+    participant Sup as SupervisorAgentA2A
+    participant PFAQ as ProdInfo A2A (:9004)
+    participant EscA2A as Escalation A2A Bridge (:9006)
+    participant Flow as Power Automate Flow
+
+    UI->>Copilot: POST /api/chat (stream=true)
+    Note over UI,Copilot: User asks product question not in KB
+    Copilot->>Sup: processMessageStream(user_message, thread_id, user_context)
+    Sup->>PFAQ: POST /a2a/invoke
+    Note right of Sup: messages=[{"role":"user","content":"Do you offer student loans?"}],\nthread_id, customer_id, user_email, stream=false
+
+    PFAQ-->>Sup: {"role":"assistant","content":"I don't have information ... Would you like me to create a support ticket...?"}
+    Sup-->>UI: SSE assistant response
+
+    UI->>Copilot: POST /api/chat (confirmation turn)
+    Note over UI,Copilot: User: "Yes, create the ticket"
+    Copilot->>Sup: processMessageStream(confirm_message,...)
+    Sup->>PFAQ: POST /a2a/invoke with full history
+    Note right of Sup: messages include prior question + assistant prompt + confirmation
+
+    PFAQ->>EscA2A: POST /a2a/invoke
+    Note right of PFAQ: content="Create a support ticket for this issue: Do you offer student loans?..."
+
+    EscA2A->>Flow: POST {customer_id,customer_email,customer_name,description,priority}
+    Flow-->>EscA2A: 200 OK + ticket response text
+    EscA2A-->>PFAQ: {"role":"assistant","content":"Support ticket TKT-... created successfully..."}
+    PFAQ-->>Sup: final assistant message
+    Sup-->>UI: SSE final response
+```
+
+### JSON payload examples (exact flow)
+
+#### 1) Frontend -> Copilot (initial product question)
+
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Do you offer student loans?",
+      "attachments": []
+    }
+  ],
+  "threadId": "thread_CUST-002",
+  "stream": true
+}
+```
+
+#### 2) Supervisor -> ProdInfo A2A (initial call)
+
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Do you offer student loans?"
+    }
+  ],
+  "thread_id": "thread_CUST-002",
+  "customer_id": "CUST-002",
+  "user_email": "alice@contoso.com",
+  "stream": false
+}
+```
+
+#### 3) ProdInfo A2A -> Supervisor (not found in KB; asks confirmation)
+
+```json
+{
+  "role": "assistant",
+  "content": "I don't have information about student loan products in my current knowledge base. Would you like me to create a support ticket so a product specialist can help you with this?",
+  "agent": "ProdInfoFAQAgent"
+}
+```
+
+#### 4) Frontend -> Copilot (confirmation turn)
+
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Do you offer student loans?",
+      "attachments": []
+    },
+    {
+      "role": "assistant",
+      "content": "I don't have information about student loan products in my current knowledge base. Would you like me to create a support ticket so a product specialist can help you with this?",
+      "attachments": []
+    },
+    {
+      "role": "user",
+      "content": "Yes, create the ticket",
+      "attachments": []
+    }
+  ],
+  "threadId": "thread_CUST-002",
+  "stream": true
+}
+```
+
+#### 5) Supervisor -> ProdInfo A2A (confirmation with history)
+
+```json
+{
+  "messages": [
+    {"role": "user", "content": "Do you offer student loans?"},
+    {"role": "assistant", "content": "I don't have information about student loan products in my current knowledge base. Would you like me to create a support ticket so a product specialist can help you with this?"},
+    {"role": "user", "content": "Yes, create the ticket"}
+  ],
+  "thread_id": "thread_CUST-002",
+  "customer_id": "CUST-002",
+  "user_email": "alice@contoso.com",
+  "stream": false
+}
+```
+
+#### 6) ProdInfo -> Escalation A2A bridge
+
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Create a support ticket for this issue: Do you offer student loans?. Customer email: alice@contoso.com, Customer name: Customer"
+    }
+  ],
+  "customer_id": "CUST-002",
+  "thread_id": "thread_CUST-002",
+  "stream": false
+}
+```
+
+#### 7) Escalation bridge -> Power Automate body
+
+```json
+{
+  "customer_id": "CUST-002",
+  "customer_email": "ujjwal.kumar@microsoft.com",
+  "customer_name": "Ujjwal Kumar",
+  "description": "Do you offer student loans?",
+  "priority": "normal"
+}
+```
+
+#### 8) Power Automate -> Escalation bridge (example)
+
+```json
+{
+  "success": true,
+  "ticket_id": "TKT-2026-0215142259",
+  "response": "Ticket TKT-2026-0215142259 created and email sent.",
+  "timestamp": "2026-02-15T14:22:59.123Z"
+}
+```
+
+#### 9) Escalation bridge -> ProdInfo -> Copilot final response (example)
+
+```json
+{
+  "role": "assistant",
+  "content": "Support ticket TKT-2026-0215142259 created successfully. Email notification sent to customer. Our support team will contact the customer within 24 business hours.",
+  "agent": "EscalationAgent"
+}
+```
+
+### Notes
+
+- The payload in step 7 reflects current bridge parser behavior that hardcodes `customer_email` and `customer_name` in the bridge handler.
+- If port `9006` is served by `escalation-agent-a2a` (MCP-backed) instead of `escalation-copilot-bridge`, step 7 body differs and Power Automate is not used.
